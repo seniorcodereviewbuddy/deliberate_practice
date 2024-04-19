@@ -1,0 +1,1 @@
+@%DELIBERATE_PRACTICE_CONDA_DIR%\python.exe %1

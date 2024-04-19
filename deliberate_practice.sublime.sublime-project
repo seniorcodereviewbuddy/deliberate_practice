@@ -1,0 +1,22 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"settings":{
+		"tab_size": 4,
+		"translate_tabs_to_spaces": true
+	},
+	"build_systems":
+	[
+		{
+			"name": "Conda Python",			
+			"selector": "source.python",
+			"windows": {
+				"cmd": ["run_python.bat", "$file"],	
+			}
+		}
+	]
+}
