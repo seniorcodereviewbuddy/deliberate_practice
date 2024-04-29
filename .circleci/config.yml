@@ -1,0 +1,24 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: continuumio/miniconda3
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: conda env create -f deliberate_practice.yml
+
+      - run:
+          name: run tests
+          command: |
+            source activate deliberate_practice
+            conda activate deliberate_practice
+            python -m pytest
+
+workflows:
+  run_tests:
+    jobs:
+      - test
