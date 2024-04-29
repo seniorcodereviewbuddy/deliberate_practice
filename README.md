@@ -20,3 +20,9 @@ To run the hooks locally, you'll need to first install pre-commit with "pre-comm
 your Conda environment.
 
 If you want a run just one hook, you can with "pre-commit run {hook_id}"
+
+## Running Tests Locally
+
+To run all the test locally just run pytest in the root directory.
+
+For more details on how to work with pytest, look at https://docs.pytest.org/en/8.2.x/contents.html

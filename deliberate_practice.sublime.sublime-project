@@ -12,10 +12,10 @@
 	"build_systems":
 	[
 		{
-			"name": "Conda Python",			
+			"name": "Conda Python",
 			"selector": "source.python",
 			"windows": {
-				"cmd": ["run_python.bat", "$file"],	
+				"cmd": ["run_python.bat", "$file"],
 			}
 		}
 	]
