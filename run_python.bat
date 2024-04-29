@@ -20,4 +20,4 @@ IF ERRORLEVEL 1 (
 %DELIBERATE_PRACTICE_CONDA_DIR%\python.exe %1
 ) ELSE (
 %DELIBERATE_PRACTICE_CONDA_DIR%\python.exe -m pytest %1
-) 
+)

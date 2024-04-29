@@ -1,6 +1,14 @@
 repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+        - id: check-merge-conflict
+        - id: check-yaml
+        - id: end-of-file-fixer
+        - id: name-tests-test
+        - id: trailing-whitespace
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.4.0
+    rev: 24.4.2
     hooks:
     -  id: black
 -   repo: https://github.com/pycqa/isort
@@ -12,7 +20,18 @@ repos:
     rev: 7.0.0
     hooks:
     -   id: flake8
+        additional_dependencies:
+            - flake8-bugbear==24.4.26
+            - flake8-builtins==2.5.0
+            - flake8-pytest-style==2.0.0
+            - pep8-naming==0.13.3
+-   repo: https://github.com/pycqa/pylint
+    rev: v3.1.0
+    hooks:
+    -   id: pylint
+        args: ["--rcfile=.pylintrc", "-sn"]
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
     -   id: mypy
+        args: [--strict]
