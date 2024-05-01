@@ -1,4 +1,4 @@
-"""A module containing MockInput class for tests."""
+"""A module containing mocks for testing."""
 
 
 class MockInput:  # pylint: disable=too-few-public-methods
