@@ -431,10 +431,12 @@ disable=raw-checker-failed,
         use-symbolic-message-instead,
         use-implicit-booleaness-not-comparison-to-string,
         use-implicit-booleaness-not-comparison-to-zero,
+        # The following are all handled by Ruff.
         missing-module-docstring,
         missing-function-docstring,
         missing-class-docstring,
         empty-docstring,
+        line-too-long
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
