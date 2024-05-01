@@ -41,4 +41,5 @@ repos:
     rev: v1.10.0
     hooks:
     -   id: mypy
+        additional_dependencies: [pytest-mypy==0.10.3]
         args: [--strict]
