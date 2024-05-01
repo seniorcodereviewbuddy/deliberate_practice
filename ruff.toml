@@ -1,18 +1,29 @@
+line-length = 88
+
 [lint]
 # Enable all `pydocstyle` rules, limiting to those that adhere to the
 # Google convention via `convention = "google"`, below.
-select = ["D"]
+# Add "W" and E501 to have Ruff handle all line length related checks.
+# N818 is a nice small naming check that pylint doesn't have, ensuring
+# exceptions end in Error.
+select = ["D", "W", "E501", "N818"]
+
+# On top of the Google convention, disable:
+# D104: Which requires a doc string for every public package.
+# D417: Which requires documentation for every function parameter.
+# At this time, these don't feel like they add enough value in
+# every case to be worth enforcing.
+ignore = ["D104", "D417"]
+
+[lint.pycodestyle]
+# Follow PEP8 guidelines to make this 72.
+max-doc-length = 72
 
 [lint.pydocstyle]
 convention = "google"
 
 [lint.per-file-ignores]
-# Don't required module comments for test files, as they'ed just generally
-# add no real value.
-# Also allow tests to not have a comment for every public function, that
-# test name and content should generally be enough documentation for most.
-"*_test.py" = ["D100", "D103"]
-
-# On top of the Google convention, disable `D417`, which requires
-# documentation for every function parameter.
-ignore = ["D417"]
+# Let test files ignore the need to document their public
+# modules/classes/functions/methods since they aren't really
+# a public and the documentation generally isn't helpful.
+"*_test.py" = ["D100", "D101", "D102", "D103"]
