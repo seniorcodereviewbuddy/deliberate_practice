@@ -1,0 +1,18 @@
+[lint]
+# Enable all `pydocstyle` rules, limiting to those that adhere to the
+# Google convention via `convention = "google"`, below.
+select = ["D"]
+
+[lint.pydocstyle]
+convention = "google"
+
+[lint.per-file-ignores]
+# Don't required module comments for test files, as they'ed just generally
+# add no real value.
+# Also allow tests to not have a comment for every public function, that
+# test name and content should generally be enough documentation for most.
+"*_test.py" = ["D100", "D103"]
+
+# On top of the Google convention, disable `D417`, which requires
+# documentation for every function parameter.
+ignore = ["D417"]
