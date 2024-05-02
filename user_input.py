@@ -36,6 +36,10 @@ def prompt_for_choice(
     Note, since python lists are 0-based, but we want to show the
     choices to users as 1-based, we have to 1 when moving to user land
     and remove 1 when moving back to code interactions.
+
+    Raises:
+        NoChoiceMadeError: If the user fails to make a decision due to
+            lack of input.
     """
     # Start enumerate at 1 and add 1 to max_choice as we shift from
     # 0-based to 1-based.
