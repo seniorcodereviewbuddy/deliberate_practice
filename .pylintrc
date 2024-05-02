@@ -81,7 +81,7 @@ limit-inference-results=100
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins=
+load-plugins=pylint.extensions.docparams
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -249,6 +249,9 @@ variable-naming-style=snake_case
 # naming-style. If left empty, variable names will be checked with the set
 # naming style.
 #variable-rgx=
+
+# Require doc strings to mention what exceptions could be raised.
+accept-no-raise-doc = no
 
 
 [CLASSES]

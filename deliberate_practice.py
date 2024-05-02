@@ -29,7 +29,11 @@ def select_run_mode(fetch_input: user_input.FetchInputWithPrompt) -> RunMode:
 
 
 def main(fetch_input: user_input.FetchInputWithPrompt) -> None:
-    """Starts the Deliberate Practice CLI."""
+    """Starts the Deliberate Practice CLI.
+
+    Raises:
+        InvalidModeError: If an unsupported mode is selected.
+    """
     selected_run_mode = select_run_mode(fetch_input)
     if selected_run_mode == RunMode.PRACTICE:
         print("Practice Mode Selected")
