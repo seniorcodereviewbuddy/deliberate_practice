@@ -4,6 +4,10 @@ import pathlib
 import random
 
 
+class InvalidActivitiesFileError(Exception):
+    """There was an issue with the activities file."""
+
+
 class Activities:
     """Activities is the root of all practice routine information.
 
@@ -18,10 +22,14 @@ class Activities:
             with open(activity_file, encoding="utf-8") as f:
                 for line in f.readlines():
                     self.activities.append(Activity(line.strip()))
-        except FileNotFoundError:
-            print(
-                "No Activity file found, creating an empty set of activites. "
-                "Please create an activity file."
+        except FileNotFoundError as e:
+            raise InvalidActivitiesFileError(
+                "No Activity file found, please create an activity file. "
+            ) from e
+
+        if not self.activities:
+            raise InvalidActivitiesFileError(
+                "No activities found in activity file. Please add activities."
             )
 
     def get_activity_descriptions(self) -> list[str]:
