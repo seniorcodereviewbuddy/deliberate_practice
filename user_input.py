@@ -27,6 +27,7 @@ def _is_valid_pick(user_choice: str, max_choice: int) -> bool:
 
     return True
 
+
 def prompt_for_choice(
     fetch_input: FetchInputWithPrompt, prompt: str, choices: list[str]
 ) -> int:

@@ -54,25 +54,17 @@ def run_practice_mode(
         chosen_activity = activities.get_random_activity()
         print(f"The chosen activity is:\n\t{chosen_activity.get_description()}")
 
-        possible_scores = [
-            "I wasn’t successful",
-            "I was ~25% successful",
-            "I was ~50% successful",
-            "I was ~75% successful",
-            "I executed the task flawlessly",
-        ]
         user_prompt = "How did you do on this activity?"
-        user_score = user_input.prompt_for_choice_index(
-            fetch_input, user_prompt, possible_scores
+        user_score = user_input.prompt_for_choice(
+            fetch_input, user_prompt, results.POSSIBLE_SCORES
         )
         print("Keep up the good work\n")
 
         activities_done += 1
 
-        # TODO: FIX, pass in user_score, not a hardcoded int.
-        print(user_score)
         current_time = datetime.datetime.now(datetime.timezone.utc)
-        practices.add_practice_set(chosen_activity, 1, current_time)
+        practices.add_practice_set(chosen_activity, user_score, current_time)
+        practices.save()
 
     return activities_done
 

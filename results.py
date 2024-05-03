@@ -6,6 +6,14 @@ import typing
 
 import routine
 
+POSSIBLE_SCORES = [
+    "I wasn’t successful",
+    "I was ~25% successful",
+    "I was ~50% successful",
+    "I was ~75% successful",
+    "I executed the task flawlessly",
+]
+
 
 class InvalidPracticesFileError(Exception):
     """There was an issue with the practices file."""
