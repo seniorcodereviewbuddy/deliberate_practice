@@ -9,111 +9,128 @@ import routine
 
 
 class TestResults:
-    def test_missing_result_file(self, tmp_path: pathlib.Path) -> None:
-        result_file = pathlib.Path(tmp_path, "no_file.txt")
-        r = results.Practices(result_file)
-        assert r.get_num_practice_sets() == 0
+    def test_missing_practices_file(self, tmp_path: pathlib.Path) -> None:
+        practices_file = pathlib.Path(tmp_path, "no_file.txt")
+        practices = results.Practices(practices_file)
+        assert practices.get_num_practice_sets() == 0
 
-    def test_empty_result_file(self, tmp_path: pathlib.Path) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
+    def test_empty_practices_file(self, tmp_path: pathlib.Path) -> None:
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
 
         # Open the file to create an empty file.
-        with open(result_file, "w", encoding="utf-8"):
+        with open(practices_file, "w", encoding="utf-8"):
             pass
 
         # An empty file is a invalid file, since if it was saved it
         # would still have some data.
         with pytest.raises(
-            results.InvalidPracticesFileError, match="Expected number for practice sets"
+            results.InvalidPracticesFileError,
+            match="Expected an integer for number of practice sets",
         ):
-            results.Practices(result_file)
+            results.Practices(practices_file)
 
     def test_save_and_load_empty_results(self, tmp_path: pathlib.Path) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
-        r = results.Practices(result_file)
-        assert r.get_num_practice_sets() == 0
-        assert not r.get_practice_sets()
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
+        practices = results.Practices(practices_file)
+        assert practices.get_num_practice_sets() == 0
+        assert not practices.get_practice_sets()
 
-        r.save()
+        practices.save()
 
-        new_results = results.Practices(result_file)
-        assert new_results.get_num_practice_sets() == 0
-        assert not new_results.get_practice_sets()
+        new_practice = results.Practices(practices_file)
+        assert new_practice.get_num_practice_sets() == 0
+        assert not new_practice.get_practice_sets()
 
     def test_add_results_to_file_and_reload(self, tmp_path: pathlib.Path) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
-        r = results.Practices(result_file)
-        assert r.get_num_practice_sets() == 0
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
+        practices = results.Practices(practices_file)
+        assert practices.get_num_practice_sets() == 0
 
         activity = routine.Activity("activity_1")
         time = datetime.datetime.now(datetime.timezone.utc)
-        r.add_practice_set(activity, 2, time)
+        practices.add_practice_set(activity, 2, time)
 
-        assert r.get_num_practice_sets() == 1
+        assert practices.get_num_practice_sets() == 1
 
         expected_practice_sets = [results.PracticeSet(activity.get_key(), 2, time)]
-        assert r.get_practice_sets() == expected_practice_sets
+        assert practices.get_practice_sets() == expected_practice_sets
 
-        r.save()
+        practices.save()
 
-        new_results = results.Practices(result_file)
+        new_results = results.Practices(practices_file)
         assert new_results.get_num_practice_sets() == 1
         assert new_results.get_practice_sets() == expected_practice_sets
 
     def test_add_multiple_results_to_file_and_reload(
         self, tmp_path: pathlib.Path
     ) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
-        r = results.Practices(result_file)
-        assert r.get_num_practice_sets() == 0
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
+        practices = results.Practices(practices_file)
+        assert practices.get_num_practice_sets() == 0
 
         activity_1 = routine.Activity("activity_1")
         time = datetime.datetime.now(datetime.timezone.utc)
-        r.add_practice_set(activity_1, 2, time)
+        practices.add_practice_set(activity_1, 2, time)
 
         activity_2 = routine.Activity("activity_2")
-        r.add_practice_set(activity_2, 3, time)
+        practices.add_practice_set(activity_2, 3, time)
 
-        assert r.get_num_practice_sets() == 2
+        assert practices.get_num_practice_sets() == 2
 
         expected_practice_sets = [
             results.PracticeSet(activity_1.get_key(), 2, time),
             results.PracticeSet(activity_2.get_key(), 3, time),
         ]
-        assert r.get_practice_sets() == expected_practice_sets
+        assert practices.get_practice_sets() == expected_practice_sets
 
-        r.save()
+        practices.save()
 
-        new_results = results.Practices(result_file)
+        new_results = results.Practices(practices_file)
         assert new_results.get_num_practice_sets() == 2
         assert new_results.get_practice_sets() == expected_practice_sets
 
-    def test_try_load_from_file_with_missing_sets(self, tmp_path: pathlib.Path) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
+    def test_multiple_load_add_results_loops(self, tmp_path: pathlib.Path) -> None:
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
+        activity = routine.Activity("activity")
 
-        with open(result_file, "w", encoding="utf-8") as f:
+        for count in range(10):
+            practices = results.Practices(practices_file)
+            assert practices.get_num_practice_sets() == count
+
+            time = datetime.datetime.now(datetime.timezone.utc)
+            practices.add_practice_set(activity, count % 5, time)
+
+            assert practices.get_num_practice_sets() == count + 1
+
+            practices.save()
+
+    def test_try_load_from_file_with_missing_sets(self, tmp_path: pathlib.Path) -> None:
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
+
+        with open(practices_file, "w", encoding="utf-8") as f:
             f.write("2\n")
             f.write("activity_key\n5\n2024-05-02T14:28:42.439597+00:00\n")
 
         with pytest.raises(
             results.InvalidPracticesFileError, match="Failed to load practice_set"
         ):
-            results.Practices(result_file)
+            results.Practices(practices_file)
 
     def test_try_load_from_file_with_too_much_data(
         self, tmp_path: pathlib.Path
     ) -> None:
-        result_file = pathlib.Path(tmp_path, "result_file.txt")
+        practices_file = pathlib.Path(tmp_path, "practices_file.txt")
 
-        with open(result_file, "w", encoding="utf-8") as f:
+        with open(practices_file, "w", encoding="utf-8") as f:
             f.write("1\n")
             f.write("activity_key\n5\n2024-05-02T14:28:42.439597+00:00\n")
             f.write("Unexpected data")
 
         with pytest.raises(
-            results.InvalidPracticesFileError, match="Data remaining after load"
+            results.InvalidPracticesFileError,
+            match="Unexpected data remaining after load",
         ):
-            results.Practices(result_file)
+            results.Practices(practices_file)
 
 
 class TestPracticeSet:

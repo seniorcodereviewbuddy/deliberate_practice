@@ -8,7 +8,7 @@ import routine
 
 
 class InvalidPracticesFileError(Exception):
-    """There was an issue with the practice file."""
+    """There was an issue with the practices file."""
 
 
 class Practices:
@@ -36,7 +36,7 @@ class Practices:
                 num_practice_sets = int(num_practice_sets_str)
             except ValueError as e:
                 raise InvalidPracticesFileError(
-                    "Expected number for practice sets, instead got "
+                    "Expected an integer for number of practice sets, instead got "
                     f'"{num_practice_sets_str}"'
                 ) from e
 
@@ -53,7 +53,8 @@ class Practices:
             remaining_data = f.read(None).strip("\n")
             if remaining_data:
                 raise InvalidPracticesFileError(
-                    f"Data remaining after load completed. Found:\n {remaining_data}"
+                    "Unexpected data remaining after load completed. Found:\n"
+                    f"{remaining_data}"
                 )
 
     def save(self) -> None:
