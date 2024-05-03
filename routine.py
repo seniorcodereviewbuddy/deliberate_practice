@@ -1,4 +1,4 @@
-"""Collection of the classes related to a practice routine."""
+"""Module of the classes related to a practice routine."""
 
 import pathlib
 import random

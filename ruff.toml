@@ -10,10 +10,11 @@ select = ["D", "W", "E501", "N818"]
 
 # On top of the Google convention, disable:
 # D104: Which requires a doc string for every public package.
+# D105: Which required a doc string for every magic method (names that start and end with 2 underscores).
 # D417: Which requires documentation for every function parameter.
 # At this time, these don't feel like they add enough value in
 # every case to be worth enforcing.
-ignore = ["D104", "D417"]
+ignore = ["D104", "D105", "D417"]
 
 [lint.pycodestyle]
 # Follow PEP8 guidelines to make this 72.
