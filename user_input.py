@@ -30,12 +30,14 @@ def _is_valid_pick(user_choice: str, max_choice: int) -> bool:
 
 def prompt_for_choice(
     fetch_input: FetchInputWithPrompt, prompt: str, choices: list[str]
-) -> str:
+) -> int:
     """Prompts the user to pick an option from the list of choices.
 
     Note, since python lists are 0-based, but we want to show the
     choices to users as 1-based, we have to 1 when moving to user land
     and remove 1 when moving back to code interactions.
+
+    Returns the index of the selected item.
 
     Raises:
         NoChoiceMadeError: If the user fails to make a decision due to
@@ -57,7 +59,7 @@ def prompt_for_choice(
         if _is_valid_pick(user_choice, max_choice):
             # Subtract 1 here since the user_choice was 1-based before
             # and now is 0-based.
-            return choices[int(user_choice) - 1]
+            return int(user_choice) - 1
 
         print(
             "\n\nUnclear input, was expecting a value between 1 and "

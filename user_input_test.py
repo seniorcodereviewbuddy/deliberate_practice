@@ -7,36 +7,36 @@ from test_utils import mocks
 class TestPromptUserForChoice:
     basic_prompt = "basic prompt string"
 
-    @pytest.mark.parametrize(("pick", "expected_value"), [(1, "a"), (2, "b"), (3, "c")])
-    def test_valid_choices(self, pick: int, expected_value: str) -> None:
+    @pytest.mark.parametrize("pick", [1, 2, 3])
+    def test_valid_choices(self, pick: int) -> None:
         choices = ["a", "b", "c"]
         input_mock = mocks.MockInput([str(pick)])
         selection = user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
-        assert selection == expected_value
+        assert selection == pick - 1
 
     def test_valid_choice_only_one_option(self) -> None:
         choices = ["a"]
         input_mock = mocks.MockInput(["1"])
         selection = user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
-        assert selection == "a"
+        assert selection == 0
 
     def test_valid_choice_after_invalid_str(self) -> None:
         input_mock = mocks.MockInput(["invalid_choice", "1"])
         choices = ["a", "b", "c"]
         selection = user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
-        assert selection == "a"
+        assert selection == 0
 
     def test_valid_choice_after_invalid_int(self) -> None:
         input_mock = mocks.MockInput(["7", "1"])
         choices = ["a", "b", "c"]
         selection = user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
-        assert selection == "a"
+        assert selection == 0
 
     def test_valid_choice_after_negative_int(self) -> None:
         input_mock = mocks.MockInput(["-7", "2"])
         choices = ["a", "b", "c"]
         selection = user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
-        assert selection == "b"
+        assert selection == 1
 
     def test_no_choice_made(self) -> None:
         input_mock = mocks.MockInput([])
