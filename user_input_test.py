@@ -49,3 +49,42 @@ class TestPromptUserForChoice:
         choices = ["a", "b", "c"]
         with pytest.raises(user_input.NoChoiceMadeError):
             user_input.prompt_for_choice(input_mock, self.basic_prompt, choices)
+
+
+class TestPromptUserForYesOrNo:
+    basic_prompt = "basic prompt string"
+
+    @pytest.mark.parametrize(
+        ("choice", "expected_value"),
+        [("y", True), ("Y", True), ("n", False), ("N", False)],
+    )
+    def test_valid_choices(self, choice: int, expected_value: bool) -> None:
+        mock_input = mocks.MockInput([str(choice)])
+        selection = user_input.prompt_yes_or_no(mock_input, self.basic_prompt)
+        assert selection == expected_value
+
+    @pytest.mark.parametrize("invalid_inputs", [["1"], ["a"], ["a", "b"]])
+    def test_positive_result_after_invalid_inputs(
+        self, invalid_inputs: list[str]
+    ) -> None:
+        mock_input = mocks.MockInput(invalid_inputs + ["y"])
+        selection = user_input.prompt_yes_or_no(mock_input, self.basic_prompt)
+        assert selection is True
+
+    @pytest.mark.parametrize("invalid_inputs", [["1"], ["a"], ["a", "b"]])
+    def test_negative_result_after_invalid_inputs(
+        self, invalid_inputs: list[str]
+    ) -> None:
+        mock_input = mocks.MockInput(invalid_inputs + ["N"])
+        selection = user_input.prompt_yes_or_no(mock_input, self.basic_prompt)
+        assert selection is False
+
+    def test_no_choice_made(self) -> None:
+        mock_input = mocks.MockInput([])
+        with pytest.raises(user_input.NoChoiceMadeError):
+            user_input.prompt_yes_or_no(mock_input, self.basic_prompt)
+
+    def test_no_choice_made_after_invalid_choice(self) -> None:
+        mock_input = mocks.MockInput(["5"])
+        with pytest.raises(user_input.NoChoiceMadeError):
+            user_input.prompt_yes_or_no(mock_input, self.basic_prompt)

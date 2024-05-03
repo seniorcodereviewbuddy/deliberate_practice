@@ -27,7 +27,6 @@ def _is_valid_pick(user_choice: str, max_choice: int) -> bool:
 
     return True
 
-
 def prompt_for_choice(
     fetch_input: FetchInputWithPrompt, prompt: str, choices: list[str]
 ) -> int:
@@ -66,3 +65,24 @@ def prompt_for_choice(
             f"{max_choice}, got {user_choice}. Please try again"
         )
         continue
+
+
+def prompt_yes_or_no(fetch_input: FetchInputWithPrompt, user_prompt: str) -> bool:
+    """Returns True if the users responds positively to the prompt.
+
+    If the user responds negatively, return False. An unclear input
+    results in asking the user again.
+
+    Raises:
+        NoChoiceMadeError: If the user fails to make a decision due
+            to lack of input.
+    """
+    while True:
+        try:
+            result = fetch_input(user_prompt + "\n(Y/N)? ")
+        except EOFError as e:
+            raise NoChoiceMadeError from e
+        if result not in ("y", "Y", "n", "N"):
+            print("Unclear input, expecting y/Y/n/N. Please try again.")
+            continue
+        return result in ("y", "Y")
