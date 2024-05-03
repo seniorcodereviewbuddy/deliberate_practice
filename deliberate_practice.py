@@ -39,12 +39,19 @@ def run_practice_mode(
     activities: routine.Activities,
     practices: results.Practices,
 ) -> int:
+    """Runs Practice mode with the given activites.
+
+    Results are saved to the given practices instance.
+
+    Returns the number of practice sets completed.
+    """
     if not activities.get_num_activities():
         print("No activities found, nothing to practice.")
         return 0
 
     print(
-        f"You currently have {activities.get_num_activities()} activities you can practice."
+        f"You currently have {activities.get_num_activities()} "
+        "activities you can practice."
     )
 
     activities_done = 0
@@ -52,7 +59,7 @@ def run_practice_mode(
         fetch_input, "Do you wish to practice an activity?"
     ):
         chosen_activity = activities.get_random_activity()
-        print(f"The chosen activity is:\n\t{chosen_activity.get_description()}")
+        print(f"\nThe chosen activity is:\n\t{chosen_activity.get_description()}\n")
 
         user_prompt = "How did you do on this activity?"
         user_score = user_input.prompt_for_choice(
@@ -81,13 +88,13 @@ def main(
     """
     selected_run_mode = select_run_mode(fetch_input)
     if selected_run_mode == RunMode.PRACTICE:
-        print("Staring Practice Mode")
+        print("\nStaring Practice Mode")
         activities = routine.Activities(activities_file)
         practices = results.Practices(practices_file)
 
         run_practice_mode(fetch_input, activities, practices)
     elif selected_run_mode == RunMode.EVALUATION:
-        print("Evaluation Mode Selected")
+        print("\nStarting Evaluation Mode")
     else:
         raise InvalidModeError(f"Unexpected mode given, {selected_run_mode}")
 
