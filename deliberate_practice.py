@@ -24,8 +24,9 @@ def select_run_mode(fetch_input: user_input.FetchInputWithPrompt) -> RunMode:
     )
     all_modes = list(RunMode)
 
-    pick = user_input.prompt_for_choice(fetch_input, prompt, all_modes)
-    return RunMode(pick)
+    picked_index = user_input.prompt_for_choice(fetch_input, prompt, all_modes)
+    picked_mode = all_modes[picked_index]
+    return RunMode(picked_mode)
 
 
 def main(fetch_input: user_input.FetchInputWithPrompt) -> None:
