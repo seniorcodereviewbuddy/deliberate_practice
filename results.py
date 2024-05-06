@@ -207,17 +207,17 @@ class ActivityEvaluation:
         self.scores = [x.score for x in ordered_practice_sets]
 
         self.oldest_practice_time: typing.Optional[datetime.datetime] = None
-        self.newest_practice_time: typing.Optional[datetime.datetime] = None
+        self.latest_practice_time: typing.Optional[datetime.datetime] = None
         if ordered_practice_sets:
             self.oldest_practice_time = ordered_practice_sets[0].date_time
-            self.newest_practice_time = ordered_practice_sets[-1].date_time
+            self.latest_practice_time = ordered_practice_sets[-1].date_time
 
     def __repr__(self) -> str:
         return (
             f"ActivityEvaluation("
             f"{self.activity_key=}, "
             f"{self.oldest_practice_time=}, "
-            f"{self.newest_practice_time=}, "
+            f"{self.latest_practice_time=}, "
             f"{self.scores=})"
         )
 
@@ -229,8 +229,8 @@ class ActivityEvaluation:
 
         if self.oldest_practice_time:
             output += f"\tOldest practice {self.oldest_practice_time.isoformat()}\n"
-        if self.newest_practice_time:
-            output += f"\tNewest practice {self.newest_practice_time.isoformat()}\n"
+        if self.latest_practice_time:
+            output += f"\tNewest practice {self.latest_practice_time.isoformat()}\n"
 
         if self.scores:
             output += f"\tScores: {self.scores}\n"
@@ -249,9 +249,9 @@ class ActivityEvaluation:
         """Returns the oldest practice time."""
         return self.oldest_practice_time
 
-    def get_newest_practice_time(self) -> typing.Optional[datetime.datetime]:
-        """Returns the newest practice time ."""
-        return self.newest_practice_time
+    def get_latest_practice_time(self) -> typing.Optional[datetime.datetime]:
+        """Returns the latest practice time ."""
+        return self.latest_practice_time
 
 
 class Evaluation:
@@ -264,15 +264,15 @@ class Evaluation:
 
     def __init__(self, practices: Practices):
         """Creates an Evaluation from the given Practices."""
-        result_mapping: dict[str, list[PracticeSet]] = {}
+        activity_to_practice_sets: dict[str, list[PracticeSet]] = {}
 
         for practice_set in practices.get_practice_sets():
-            result_mapping.setdefault(practice_set.activity_key, []).append(
+            activity_to_practice_sets.setdefault(practice_set.activity_key, []).append(
                 practice_set
             )
 
         self.activity_evaluations = []
-        for activity_key, practice_sets in result_mapping.items():
+        for activity_key, practice_sets in activity_to_practice_sets.items():
             self.activity_evaluations.append(
                 ActivityEvaluation(activity_key, practice_sets)
             )

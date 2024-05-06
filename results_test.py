@@ -257,14 +257,14 @@ class TestActivityEvaluation:
 
         if number_of_practice_sets == 0:
             assert activity_evaluation.get_oldest_practice_time() is None
-            assert activity_evaluation.get_newest_practice_time() is None
+            assert activity_evaluation.get_latest_practice_time() is None
             expected_output = (
                 f"{activity_key}\n" f"\tPracticed {number_of_practice_sets} times.\n"
             )
         else:
             assert activity_evaluation.get_oldest_practice_time() == sorted_datetimes[0]
             assert (
-                activity_evaluation.get_newest_practice_time() == sorted_datetimes[-1]
+                activity_evaluation.get_latest_practice_time() == sorted_datetimes[-1]
             )
             expected_output = (
                 f"{activity_key}\n"
@@ -318,7 +318,7 @@ class TestEvaluation:
                 activity_evaluation.get_num_practice_sets() == number_of_practice_sets
             )
             assert activity_evaluation.get_oldest_practice_time() == time
-            assert activity_evaluation.get_newest_practice_time() == time
+            assert activity_evaluation.get_latest_practice_time() == time
 
             expected_output = (
                 f"1 activity has been completed {number_of_practice_sets} times.\n\n"
@@ -354,7 +354,7 @@ class TestEvaluation:
                 == num_practice_set_per_activity
             )
             assert activity_evaluation.get_oldest_practice_time() == time
-            assert activity_evaluation.get_newest_practice_time() == time
+            assert activity_evaluation.get_latest_practice_time() == time
 
         expected_output = (
             f"{num_activities} activities has been completed "

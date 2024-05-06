@@ -1,3 +1,4 @@
+import datetime
 import pathlib
 
 import pytest
@@ -81,12 +82,23 @@ def test_main_practice_one_activity(tmp_path: pathlib.Path) -> None:
     deliberate_practice.main(mock_input, activity_file, practices_file)
 
 
-def test_main_evaluation(tmp_path: pathlib.Path) -> None:
+def test_main_evaluation(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    activity_key = "practice_activity"
+    activity = routine.Activity(activity_key)
+
     activity_file = pathlib.Path(tmp_path, "activities.txt")
     with open(activity_file, "w", encoding="utf-8") as f:
-        f.write("practice_activity")
+        f.write(activity_key)
 
     practices_file = pathlib.Path(tmp_path, "practices.txt")
+    practices = results.Practices(practices_file)
+    time = datetime.datetime(2024, 1, 1, tzinfo=datetime.timezone.utc)
+    num_practice_sets = 5
+    for _ in range(num_practice_sets):
+        practices.add_practice_set(activity, 1, time)
+    practices.save()
 
     mock_input = mocks.MockInput(
         [
@@ -94,3 +106,15 @@ def test_main_evaluation(tmp_path: pathlib.Path) -> None:
         ]
     )
     deliberate_practice.main(mock_input, activity_file, practices_file)
+
+    expected_output = (
+        "Starting Evaluation Mode\n"
+        f"1 activity has been completed {num_practice_sets} times.\n\n"
+        "practice_activity\n"
+        f"\tPracticed {num_practice_sets} times.\n"
+        "\tOldest practice 2024-01-01T00:00:00+00:00\n"
+        "\tNewest practice 2024-01-01T00:00:00+00:00\n"
+        "\tScores: [1, 1, 1, 1, 1]"
+    )
+    captured = capsys.readouterr()
+    assert expected_output in captured.out
