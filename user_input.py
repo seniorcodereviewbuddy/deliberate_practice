@@ -9,7 +9,7 @@ import typing
 # Note, ideally this should be a type, but that isn't currently
 # supported by mypy.
 # See https://github.com/python/mypy/issues/15238 for details.
-FetchInputWithPrompt = typing.Callable[[str], str]
+FetchInputWithPrompt = typing.Callable[[], str]
 
 
 class NoChoiceMadeError(Exception):
@@ -49,10 +49,11 @@ def prompt_for_choice(
         f"{str(index)}) {value}" for index, value in enumerate(choices, 1)
     )
     max_choice = len(choices) + 1
-    complete_user_prompt = prompt + "\n" + choices_with_index + "\n"
+    complete_user_prompt = prompt + "\n" + choices_with_index
     while True:
         try:
-            user_choice = fetch_input(complete_user_prompt)
+            print(complete_user_prompt)
+            user_choice = fetch_input()
         except EOFError as e:
             raise NoChoiceMadeError from e
 
@@ -80,7 +81,8 @@ def prompt_yes_or_no(fetch_input: FetchInputWithPrompt, user_prompt: str) -> boo
     """
     while True:
         try:
-            result = fetch_input(user_prompt + "\n(Y/N)? ")
+            print(user_prompt + "\n(Y/N)? ", end="")
+            result = fetch_input()
         except EOFError as e:
             raise NoChoiceMadeError from e
         if result not in ("y", "Y", "n", "N"):

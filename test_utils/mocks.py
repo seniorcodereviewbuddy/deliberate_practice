@@ -8,7 +8,7 @@ class MockInput:  # pylint: disable=too-few-public-methods
         """Initialize the instance with inputs to return when called."""
         self.inputs = inputs
 
-    def __call__(self, _prompt: str) -> str:
+    def __call__(self) -> str:
         """Returns the next input string.
 
         Raises:
