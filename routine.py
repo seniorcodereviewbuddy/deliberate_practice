@@ -21,7 +21,9 @@ class Activities:
         try:
             with open(activity_file, encoding="utf-8") as f:
                 for line in f.readlines():
-                    self.activities.append(Activity(line.strip()))
+                    stripped_line = line.strip()
+                    if stripped_line:
+                        self.activities.append(Activity(stripped_line))
         except FileNotFoundError as e:
             raise InvalidActivitiesFileError(
                 "No Activity file found, please create an activity file. "

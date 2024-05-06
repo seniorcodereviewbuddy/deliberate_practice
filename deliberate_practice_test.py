@@ -87,7 +87,7 @@ def test_main_practice_one_activity(
         "2) Evaluation\n\n"
         "Staring Practice Mode\n"
         "Note: No Practices file found. Starting from an empty state\n"
-        "You currently have 1 activities you can practice.\n"
+        "You currently have 1 activity you can practice.\n"
         "Do you wish to practice an activity?\n(Y/N)? \n"
         "The chosen activity is:\n"
         "\tpractice_activity\n\n"
@@ -103,6 +103,54 @@ def test_main_practice_one_activity(
 
     captured_output = capsys.readouterr().out
     assert expected_output in captured_output
+
+
+def test_main_practice_multiple_activity(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    activity_file = pathlib.Path(tmp_path, "activities.txt")
+    num_activities = 5
+    with open(activity_file, "w", encoding="utf-8") as f:
+        for x in range(num_activities):
+            f.write(f"practice_activity_{x}\n")
+
+    practices_file = pathlib.Path(tmp_path, "practices.txt")
+
+    mock_input = mocks.MockInput(
+        [
+            "1",  # Start Practice Mode.
+            "Y",  # Practice an activity.
+            "2",  # Score the activty a 2.
+            "N",  # Don't practice another, should exit.
+        ]
+    )
+    deliberate_practice.main(mock_input, activity_file, practices_file)
+
+    captured_output = capsys.readouterr().out
+    expected_output_start = (
+        "Welcome to the Deliberate Practice CLI\n"
+        "Which mode do you wish to run in?\n"
+        "1) Practice\n"
+        "2) Evaluation\n\n"
+        "Staring Practice Mode\n"
+        "Note: No Practices file found. Starting from an empty state\n"
+        f"You currently have {num_activities} activities you can practice.\n"
+        "Do you wish to practice an activity?\n(Y/N)? \n"
+        "The chosen activity is:\n"
+    )
+    assert expected_output_start in captured_output
+
+    expected_output_end = (
+        "How did you do on this activity?\n"
+        "1) I wasn’t successful\n"
+        "2) I was ~25% successful\n"
+        "3) I was ~50% successful\n"
+        "4) I was ~75% successful\n"
+        "5) I executed the task flawlessly"
+        "\nKeep up the good work\n\n"
+        "Do you wish to practice an activity?\n(Y/N)? "
+    )
+    assert expected_output_end in captured_output
 
 
 def test_main_evaluation(
