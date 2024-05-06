@@ -9,7 +9,7 @@ import typing
 # Note, ideally this should be a type, but that isn't currently
 # supported by mypy.
 # See https://github.com/python/mypy/issues/15238 for details.
-FetchInputWithPrompt = typing.Callable[[], str]
+FetchInput = typing.Callable[[], str]
 
 
 class NoChoiceMadeError(Exception):
@@ -28,9 +28,7 @@ def _is_valid_pick(user_choice: str, max_choice: int) -> bool:
     return True
 
 
-def prompt_for_choice(
-    fetch_input: FetchInputWithPrompt, prompt: str, choices: list[str]
-) -> int:
+def prompt_for_choice(fetch_input: FetchInput, prompt: str, choices: list[str]) -> int:
     """Prompts the user to pick an option from the list of choices.
 
     Note, since python lists are 0-based, but we want to show the
@@ -69,7 +67,7 @@ def prompt_for_choice(
         continue
 
 
-def prompt_yes_or_no(fetch_input: FetchInputWithPrompt, user_prompt: str) -> bool:
+def prompt_yes_or_no(fetch_input: FetchInput, user_prompt: str) -> bool:
     """Returns True if the users responds positively to the prompt.
 
     If the user responds negatively, return False. An unclear input
