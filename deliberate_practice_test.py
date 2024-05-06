@@ -79,3 +79,18 @@ def test_main_practice_one_activity(tmp_path: pathlib.Path) -> None:
         ]
     )
     deliberate_practice.main(mock_input, activity_file, practices_file)
+
+
+def test_main_evaluation(tmp_path: pathlib.Path) -> None:
+    activity_file = pathlib.Path(tmp_path, "activities.txt")
+    with open(activity_file, "w", encoding="utf-8") as f:
+        f.write("practice_activity")
+
+    practices_file = pathlib.Path(tmp_path, "practices.txt")
+
+    mock_input = mocks.MockInput(
+        [
+            "2",  # Start Evaluation Mode.
+        ]
+    )
+    deliberate_practice.main(mock_input, activity_file, practices_file)

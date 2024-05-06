@@ -164,3 +164,150 @@ class PracticeSet:
         This output should be loaded by load_from_file_object.
         """
         f.write(f"{self.activity_key}\n{self.score}\n{self.date_time.isoformat()}\n")
+
+
+class ActivityEvaluationCreationError(Exception):
+    """ActivityEvaluation encountered a error during creation.
+
+    This usually occurs when there is an activity key mismatch.
+    """
+
+
+class ActivityEvaluation:
+    """A collection of all practice sets for a given Activity.
+
+    This is only meant to show the users the results of their practice,
+    not to add new pratice sets.
+    """
+
+    def __init__(self, activity_key: str, practice_sets: list[PracticeSet]):
+        """Creates an ActivityEvaluation from the given practice_sets.
+
+        Note, all practice_sets must be for the given activity_key,
+        otherwise this will raise an exception.
+
+        Raises:
+            ActivityEvaluationCreationError: The given activity_key
+                didn't match the practice_sets activities keys.
+        """
+        self.activity_key = activity_key
+
+        # Ensure all the practice sets are for this activity key.
+        practice_sets_activity_keys = set(x.activity_key for x in practice_sets)
+        unexpected_keys = practice_sets_activity_keys.difference(
+            set([self.activity_key])
+        )
+        if unexpected_keys:
+            raise ActivityEvaluationCreationError(
+                f"activity_key mismatch. Expected only {self.activity_key}, "
+                f"got {practice_sets_activity_keys}"
+            )
+
+        ordered_practice_sets = sorted(practice_sets, key=lambda x: x.date_time)
+        self.scores = [x.score for x in ordered_practice_sets]
+
+        self.oldest_practice_time: typing.Optional[datetime.datetime] = None
+        self.newest_practice_time: typing.Optional[datetime.datetime] = None
+        if ordered_practice_sets:
+            self.oldest_practice_time = ordered_practice_sets[0].date_time
+            self.newest_practice_time = ordered_practice_sets[-1].date_time
+
+    def __repr__(self) -> str:
+        return (
+            f"ActivityEvaluation("
+            f"{self.activity_key=}, "
+            f"{self.oldest_practice_time=}, "
+            f"{self.newest_practice_time=}, "
+            f"{self.scores=})"
+        )
+
+    def __str__(self) -> str:
+        output = (
+            f"{self.activity_key}\n"
+            f"\tPracticed {self.get_num_practice_sets()} times.\n"
+        )
+
+        if self.oldest_practice_time:
+            output += f"\tOldest practice {self.oldest_practice_time.isoformat()}\n"
+        if self.newest_practice_time:
+            output += f"\tNewest practice {self.newest_practice_time.isoformat()}\n"
+
+        if self.scores:
+            output += f"\tScores: {self.scores}\n"
+
+        return output
+
+    def get_activity_key(self) -> str:
+        """Returns the key of the Activity this instance maps to."""
+        return self.activity_key
+
+    def get_num_practice_sets(self) -> int:
+        """Returns the number of practice sets."""
+        return len(self.scores)
+
+    def get_oldest_practice_time(self) -> typing.Optional[datetime.datetime]:
+        """Returns the oldest practice time."""
+        return self.oldest_practice_time
+
+    def get_newest_practice_time(self) -> typing.Optional[datetime.datetime]:
+        """Returns the newest practice time ."""
+        return self.newest_practice_time
+
+
+class Evaluation:
+    """An Evaluation based off the Practices given.
+
+    The evaluation is based off the Practices when given, any future
+    changes won't be reflected here. If changes are desired, a new
+    Evaluation needs to be created.
+    """
+
+    def __init__(self, practices: Practices):
+        """Creates an Evaluation from the given Practices."""
+        result_mapping: dict[str, list[PracticeSet]] = {}
+
+        for practice_set in practices.get_practice_sets():
+            result_mapping.setdefault(practice_set.activity_key, []).append(
+                practice_set
+            )
+
+        self.activity_evaluations = []
+        for activity_key, practice_sets in result_mapping.items():
+            self.activity_evaluations.append(
+                ActivityEvaluation(activity_key, practice_sets)
+            )
+
+        # Ensure evaluations are sorted by key order.
+        self.activity_evaluations = sorted(
+            self.activity_evaluations, key=lambda x: x.activity_key
+        )
+
+    def __str__(self) -> str:
+        activity_word = (
+            "activity" if len(self.activity_evaluations) == 1 else "activities"
+        )
+
+        output = (
+            f"{self.get_num_activities()} {activity_word} has been "
+            f"completed {self.get_num_of_practice_sets()} times.\n"
+        )
+
+        for activity_evaluation in self.activity_evaluations:
+            output += "\n" + str(activity_evaluation)
+
+        return output
+
+    def get_activity_evaluation(self, index: int) -> ActivityEvaluation:
+        """Returns the ActivityEvaluation at the given index.
+
+        The ActivityEvaluations are in key order.
+        """
+        return self.activity_evaluations[index]
+
+    def get_num_activities(self) -> int:
+        """Returns the number of activities."""
+        return len(self.activity_evaluations)
+
+    def get_num_of_practice_sets(self) -> int:
+        """Returns the number of practice sets in all activites."""
+        return sum(x.get_num_practice_sets() for x in self.activity_evaluations)

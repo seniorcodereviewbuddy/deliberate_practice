@@ -225,3 +225,142 @@ class TestPracticeSet:
             results.PracticeSetLoadingError, match="datetime wasn't in iso format"
         ):
             results.PracticeSet.load_from_file_object(f)
+
+
+class TestActivityEvaluation:
+    @pytest.mark.parametrize(
+        ("number_of_practice_sets", "reverse_order"),
+        [(0, False), (1, False), (10, False), (10, True), (100, False), (100, True)],
+    )
+    def test_activity_evaluation(
+        self, number_of_practice_sets: int, reverse_order: bool
+    ) -> None:
+        activity_key = "practice_activity"
+
+        sorted_scores = [x % 5 for x in range(number_of_practice_sets)]
+        initial_time = datetime.datetime.now(datetime.timezone.utc)
+        sorted_datetimes = [
+            initial_time + (x * datetime.timedelta(minutes=5))
+            for x in range(number_of_practice_sets)
+        ]
+        practice_sets = [
+            results.PracticeSet(activity_key, sorted_scores[x], sorted_datetimes[x])
+            for x in range(number_of_practice_sets)
+        ]
+
+        if reverse_order:
+            practice_sets = list(reversed(practice_sets))
+
+        activity_evaluation = results.ActivityEvaluation(activity_key, practice_sets)
+        assert activity_evaluation.get_activity_key() == activity_key
+        assert activity_evaluation.get_num_practice_sets() == number_of_practice_sets
+
+        if number_of_practice_sets == 0:
+            assert activity_evaluation.get_oldest_practice_time() is None
+            assert activity_evaluation.get_newest_practice_time() is None
+            expected_output = (
+                f"{activity_key}\n" f"\tPracticed {number_of_practice_sets} times.\n"
+            )
+        else:
+            assert activity_evaluation.get_oldest_practice_time() == sorted_datetimes[0]
+            assert (
+                activity_evaluation.get_newest_practice_time() == sorted_datetimes[-1]
+            )
+            expected_output = (
+                f"{activity_key}\n"
+                f"\tPracticed {number_of_practice_sets} times.\n"
+                f"\tOldest practice {sorted_datetimes[0].isoformat()}\n"
+                f"\tNewest practice {sorted_datetimes[-1].isoformat()}\n"
+                f"\tScores: {sorted_scores}\n"
+            )
+        assert str(activity_evaluation) == expected_output
+
+    def test_activity_evaluation_mismatch_activity_keys(self) -> None:
+        activity_key = "practice_activity"
+        practice_sets = [
+            results.PracticeSet(
+                "different_key", 1, datetime.datetime.now(datetime.timezone.utc)
+            )
+        ]
+
+        with pytest.raises(
+            results.ActivityEvaluationCreationError, match="activity_key mismatch"
+        ):
+            results.ActivityEvaluation(activity_key, practice_sets)
+
+
+class TestEvaluation:
+    @pytest.mark.parametrize("number_of_practice_sets", [0, 1, 10, 100])
+    def test_evaluation_one_activity(
+        self, tmp_path: pathlib.Path, number_of_practice_sets: int
+    ) -> None:
+        activity = routine.Activity("practice_activity")
+
+        practices_file = pathlib.Path(tmp_path, "practices.txt")
+        practices = results.Practices(practices_file)
+        time = datetime.datetime.now(datetime.timezone.utc)
+        for _ in range(number_of_practice_sets):
+            practices.add_practice_set(activity, 1, time)
+
+        evaluation = results.Evaluation(practices)
+        assert evaluation.get_num_of_practice_sets() == number_of_practice_sets
+
+        if number_of_practice_sets == 0:
+            assert evaluation.get_num_activities() == 0
+
+            expected_output = "0 activities has been completed 0 times.\n"
+        else:
+            assert evaluation.get_num_activities() == 1
+
+            activity_evaluation = evaluation.get_activity_evaluation(0)
+            assert activity_evaluation.get_activity_key() == activity.get_key()
+            assert (
+                activity_evaluation.get_num_practice_sets() == number_of_practice_sets
+            )
+            assert activity_evaluation.get_oldest_practice_time() == time
+            assert activity_evaluation.get_newest_practice_time() == time
+
+            expected_output = (
+                f"1 activity has been completed {number_of_practice_sets} times.\n\n"
+                f"{str(activity_evaluation)}"
+            )
+        assert str(evaluation) == expected_output
+
+    def test_evaluation_multiple_activities(self, tmp_path: pathlib.Path) -> None:
+        activities = [
+            routine.Activity("practice_activity_1"),
+            routine.Activity("practice_activity_2"),
+            routine.Activity("practice_activity_3"),
+        ]
+        num_activities = len(activities)
+        num_practice_set_per_activity = 7
+        total_num_practice_sets = num_activities * num_practice_set_per_activity
+
+        practices_file = pathlib.Path(tmp_path, "practices.txt")
+        practices = results.Practices(practices_file)
+        time = datetime.datetime.now(datetime.timezone.utc)
+        for x in range(total_num_practice_sets):
+            practices.add_practice_set(activities[x % num_activities], 1, time)
+
+        evaluation = results.Evaluation(practices)
+        assert evaluation.get_num_activities() == num_activities
+        assert evaluation.get_num_of_practice_sets() == total_num_practice_sets
+
+        for x, activity in enumerate(activities):
+            activity_evaluation = evaluation.get_activity_evaluation(x)
+            assert activity_evaluation.get_activity_key() == activity.get_key()
+            assert (
+                activity_evaluation.get_num_practice_sets()
+                == num_practice_set_per_activity
+            )
+            assert activity_evaluation.get_oldest_practice_time() == time
+            assert activity_evaluation.get_newest_practice_time() == time
+
+        expected_output = (
+            f"{num_activities} activities has been completed "
+            f"{total_num_practice_sets} times.\n\n"
+            f"{str(evaluation.get_activity_evaluation(0))}\n"
+            f"{str(evaluation.get_activity_evaluation(1))}\n"
+            f"{str(evaluation.get_activity_evaluation(2))}"
+        )
+        assert str(evaluation) == expected_output
