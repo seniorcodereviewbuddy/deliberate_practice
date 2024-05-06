@@ -95,6 +95,9 @@ def main(
         run_practice_mode(fetch_input, activities, practices)
     elif selected_run_mode == RunMode.EVALUATION:
         print("\nStarting Evaluation Mode")
+        practices = results.Practices(practices_file)
+        evaluation = results.Evaluation(practices)
+        print(evaluation)
     else:
         raise InvalidModeError(f"Unexpected mode given, {selected_run_mode}")
 
