@@ -25,7 +25,6 @@ class TestActivities:
     def test_activity_file_blank_lines(self, tmp_path: pathlib.Path) -> None:
         activity_file = pathlib.Path(tmp_path, "activities.txt")
 
-        # Open the file to create an empty file.
         with open(activity_file, "w", encoding="utf-8") as f:
             f.write("\n\n")
 
