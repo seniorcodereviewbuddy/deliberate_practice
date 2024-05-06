@@ -49,9 +49,10 @@ def run_practice_mode(
         print("No activities found, nothing to practice.")
         return 0
 
+    activity_word = "activity" if activities.get_num_activities() == 1 else "activities"
     print(
         f"You currently have {activities.get_num_activities()} "
-        "activities you can practice."
+        f"{activity_word} you can practice."
     )
 
     activities_done = 0

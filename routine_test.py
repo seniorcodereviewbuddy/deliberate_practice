@@ -22,10 +22,33 @@ class TestActivities:
         with pytest.raises(routine.InvalidActivitiesFileError):
             routine.Activities(activity_file)
 
+    def test_activity_file_blank_lines(self, tmp_path: pathlib.Path) -> None:
+        activity_file = pathlib.Path(tmp_path, "activities.txt")
+
+        with open(activity_file, "w", encoding="utf-8") as f:
+            f.write("\n\n")
+
+        # The blank lines aren't the error, it's that there are no
+        # non-blank lines.
+        with pytest.raises(routine.InvalidActivitiesFileError):
+            routine.Activities(activity_file)
+
     def test_activity_file_one_activity(self, tmp_path: pathlib.Path) -> None:
         activity_file = pathlib.Path(tmp_path, "activities.txt")
         with open(activity_file, "w", encoding="utf-8") as f:
             f.write("activity")
+
+        activities = routine.Activities(activity_file)
+        assert activities.get_num_activities() == 1
+
+        assert activities.get_activity_descriptions() == ["activity"]
+
+    def test_activity_file_one_activity_with_blank_lines(
+        self, tmp_path: pathlib.Path
+    ) -> None:
+        activity_file = pathlib.Path(tmp_path, "activities.txt")
+        with open(activity_file, "w", encoding="utf-8") as f:
+            f.write("\nactivity\n")
 
         activities = routine.Activities(activity_file)
         assert activities.get_num_activities() == 1
