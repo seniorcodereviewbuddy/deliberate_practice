@@ -49,10 +49,7 @@ def test_run_practice_mode(
     ] * number_of_practice_sets
 
     mock_input = mocks.MockInput(
-        [
-            "1",  # Start Practice Mode.
-        ]
-        + practice_session_inputs
+        practice_session_inputs
         + [
             "N",  # Don't practice any more activities, should return.
         ]
