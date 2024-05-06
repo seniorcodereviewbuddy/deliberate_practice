@@ -116,7 +116,7 @@ class PracticeSet:
         """Loads a PracticeSet from the given Text I/O stream.
 
         Raises:
-            PracticeSetLoadingError: If the IO buffer has a malformed
+            PracticeSetLoadingError: The IO buffer has a malformed
                 PracticeSet.
         """
         activity_key = f.readline().rstrip("\n")

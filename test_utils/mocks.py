@@ -12,7 +12,7 @@ class MockInput:  # pylint: disable=too-few-public-methods
         """Returns the next input string.
 
         Raises:
-            EOFError: if there is no more input, similar to input().
+            EOFError: There is no more input, similar to input().
         """
         if not self.inputs:
             raise EOFError

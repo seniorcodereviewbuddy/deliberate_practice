@@ -40,7 +40,7 @@ def prompt_for_choice(
     Returns the index of the selected item.
 
     Raises:
-        NoChoiceMadeError: If the user fails to make a decision due to
+        NoChoiceMadeError: The user failed to make a decision due to
             lack of input.
     """
     # Start enumerate at 1 and add 1 to max_choice as we shift from
@@ -75,7 +75,7 @@ def prompt_yes_or_no(fetch_input: FetchInputWithPrompt, user_prompt: str) -> boo
     results in asking the user again.
 
     Raises:
-        NoChoiceMadeError: If the user fails to make a decision due
+        NoChoiceMadeError: The user failed to make a decision due
             to lack of input.
     """
     while True:
