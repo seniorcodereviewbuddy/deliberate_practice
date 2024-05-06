@@ -38,7 +38,7 @@ class Activities:
         return [x.get_description() for x in sorted_activities]
 
     def get_num_activities(self) -> int:
-        """Returns the number of Activities in this instance."""
+        """Returns the number of Activities."""
         return len(self.activities)
 
     def get_random_activity(self) -> "Activity":

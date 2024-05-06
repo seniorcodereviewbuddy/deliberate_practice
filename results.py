@@ -77,7 +77,7 @@ class Practices:
                 practice_set.save(f)
 
     def get_num_practice_sets(self) -> int:
-        """Returns the number of PracticeSets in this instance."""
+        """Returns the number of PracticeSets."""
         return len(self.practice_sets)
 
     def add_practice_set(
@@ -87,7 +87,7 @@ class Practices:
         self.practice_sets.append(PracticeSet(act.get_key(), score, date_time))
 
     def get_practice_sets(self) -> list["PracticeSet"]:
-        """Returns the PracticeSets contained in this instance."""
+        """Returns the PracticeSets contained."""
         return self.practice_sets
 
 
