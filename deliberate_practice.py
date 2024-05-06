@@ -21,7 +21,7 @@ class RunMode(enum.StrEnum):
     EVALUATION = "Evaluation"
 
 
-def select_run_mode(fetch_input: user_input.FetchInputWithPrompt) -> RunMode:
+def select_run_mode(fetch_input: user_input.FetchInput) -> RunMode:
     """Prompts the user to determine what RunMode to launch."""
     prompt = (
         "Welcome to the Deliberate Practice CLI" + "\n"
@@ -35,7 +35,7 @@ def select_run_mode(fetch_input: user_input.FetchInputWithPrompt) -> RunMode:
 
 
 def run_practice_mode(
-    fetch_input: user_input.FetchInputWithPrompt,
+    fetch_input: user_input.FetchInput,
     activities: routine.Activities,
     practices: results.Practices,
 ) -> int:
@@ -77,7 +77,7 @@ def run_practice_mode(
 
 
 def main(
-    fetch_input: user_input.FetchInputWithPrompt,
+    fetch_input: user_input.FetchInput,
     activities_file: pathlib.Path,
     practices_file: pathlib.Path,
 ) -> None:

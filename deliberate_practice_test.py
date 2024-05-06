@@ -61,7 +61,9 @@ def test_run_practice_mode(
     assert activites_done == number_of_practice_sets
 
 
-def test_main_practice_one_activity(tmp_path: pathlib.Path) -> None:
+def test_main_practice_one_activity(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     activity_file = pathlib.Path(tmp_path, "activities.txt")
     with open(activity_file, "w", encoding="utf-8") as f:
         f.write("practice_activity")
@@ -77,6 +79,30 @@ def test_main_practice_one_activity(tmp_path: pathlib.Path) -> None:
         ]
     )
     deliberate_practice.main(mock_input, activity_file, practices_file)
+
+    expected_output = (
+        "Welcome to the Deliberate Practice CLI\n"
+        "Which mode do you wish to run in?\n"
+        "1) Practice\n"
+        "2) Evaluation\n\n"
+        "Staring Practice Mode\n"
+        "Note: No Practices file found. Starting from an empty state\n"
+        "You currently have 1 activities you can practice.\n"
+        "Do you wish to practice an activity?\n(Y/N)? \n"
+        "The chosen activity is:\n"
+        "\tpractice_activity\n\n"
+        "How did you do on this activity?\n"
+        "1) I wasn’t successful\n"
+        "2) I was ~25% successful\n"
+        "3) I was ~50% successful\n"
+        "4) I was ~75% successful\n"
+        "5) I executed the task flawlessly"
+        "\nKeep up the good work\n\n"
+        "Do you wish to practice an activity?\n(Y/N)? "
+    )
+
+    captured_output = capsys.readouterr().out
+    assert expected_output in captured_output
 
 
 def test_main_evaluation(
