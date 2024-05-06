@@ -84,7 +84,7 @@ def main(
     """Starts the Deliberate Practice CLI.
 
     Raises:
-        InvalidModeError: If an unsupported mode is selected.
+        InvalidModeError: An unsupported mode was selected.
     """
     selected_run_mode = select_run_mode(fetch_input)
     if selected_run_mode == RunMode.PRACTICE:
