@@ -38,7 +38,7 @@ repos:
       types: [python]
       args: ["--rcfile=.pylintrc", "-sn"]
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.4.3
+  rev: v0.4.4
   hooks:
     # Only use ruff for pydocstyle comments for now.
     # Consider using it to replace the other tooling later.
