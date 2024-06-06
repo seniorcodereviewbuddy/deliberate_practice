@@ -3,6 +3,7 @@ dependencies:
   - python==3.12.3
   - pip
   - pip:
+      - Django==5.0.6
       - pre_commit==3.7.0
       - pylint==3.1.0
       - pytest==8.1.1

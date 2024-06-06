@@ -157,3 +157,5 @@ cython_debug/
 
 # Deliberate Practice user files
 user_files/
+
+*.bak

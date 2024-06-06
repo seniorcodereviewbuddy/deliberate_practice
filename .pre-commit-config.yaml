@@ -48,5 +48,5 @@ repos:
     rev: v1.10.0
     hooks:
     -   id: mypy
-        additional_dependencies: [pytest-mypy==0.10.3]
+        additional_dependencies: [pytest-mypy==0.10.3, django_stubs==5.0.2]
         args: [--strict]
