@@ -19,3 +19,5 @@ jobs:
     # Pylint has been unable to run within pre-commit, so run it on it's own.
     - name: Pylint
       run: pylint **.py
+    - name: Django Check Migrations
+      run: python manage.py makemigrations --check --dry-run --no-input
