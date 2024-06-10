@@ -1,6 +1,7 @@
 ci:
     autofix_prs: false
-    skip: [pylint]
+    # The system pre-commit checks are run by Github actions on GitHub.
+    skip: [pylint, django_checkmigrations]
 
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
