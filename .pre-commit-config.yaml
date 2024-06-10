@@ -49,7 +49,9 @@ repos:
     rev: v1.10.0
     hooks:
     -   id: mypy
-        additional_dependencies: [pytest-mypy==0.10.3, django_stubs==5.0.2]
+        # Note, pytest-django is listed here and in deliberate_practice.yaml because it's needed
+        # by tests and by mypy (since it includes the typing.)
+        additional_dependencies: [pytest-mypy==0.10.3, django_stubs==5.0.2, pytest-django==4.8.0]
         args: [--strict]
 -   repo: local
     hooks:
