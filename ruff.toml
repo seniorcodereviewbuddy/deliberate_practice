@@ -1,5 +1,7 @@
 line-length = 88
 
+exclude = ["deliberate_practice_app/migrations"]
+
 [lint]
 # Enable all `pydocstyle` rules, limiting to those that adhere to the
 # Google convention via `convention = "google"`, below.
