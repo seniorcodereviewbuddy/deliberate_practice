@@ -11,4 +11,4 @@ class DeliberatePracticeAppConfig(AppConfig):
     """
 
     default_auto_field = "django.db.models.BigAutoField"
-    name = "deliberat_practice_app"
+    name = "deliberate_practice_app"
