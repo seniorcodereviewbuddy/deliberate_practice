@@ -14,6 +14,12 @@ Likely with the following command in a CLI "conda env create --file deliberate_p
 1) If desired, set the environment variable DELIBERATE_PRACTICE_CONDA_DIR to the newly created conda directory<br>
 This can be used by Sublime to find the python executable to run, if desired
 
+## Creating a Super User
+
+If you need/want to visit the admin page, you'll need to create a superuser. To do so, run `python manage.py createsuperuser`
+with whatever values you desire. Current recommendation for local dev is to have user name and password as admin (ignore the
+warnings about a weak password, this should only be ignored for local usage).
+
 ## Running Hooks Local
 
 To run the hooks locally, you'll need to first install pre-commit with "pre-commit install", from inside
