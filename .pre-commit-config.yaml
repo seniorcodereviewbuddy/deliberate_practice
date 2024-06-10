@@ -50,3 +50,12 @@ repos:
     -   id: mypy
         additional_dependencies: [pytest-mypy==0.10.3, django_stubs==5.0.2]
         args: [--strict]
+-   repo: local
+    hooks:
+    - id: django_checkmigrations
+      name: django_checkmigrations
+      entry: python manage.py
+      language: system
+      types: [python]
+      pass_filenames: false
+      args: ["makemigrations", "--check", "--dry-run", "--no-input"]
