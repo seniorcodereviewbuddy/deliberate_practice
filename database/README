@@ -1,0 +1,5 @@
+This README ensures this database folder exists.
+
+If this folder doesn't exist, Django fails under the default configs to create
+an SQLite database in this folder as while it will create the DB, it won't create
+the folder.
