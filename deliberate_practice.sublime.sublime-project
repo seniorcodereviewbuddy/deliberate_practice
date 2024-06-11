@@ -3,6 +3,9 @@
 	[
 		{
 			"path": ".",
+			"file_exclude_patterns": [
+				"*.bak"
+			],
 			"folder_exclude_patterns": [
 				".mypy_cache",
 				".pytest_cache",
