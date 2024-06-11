@@ -9,11 +9,11 @@ def test_index(client: test.Client) -> None:
     # Ensure expected URLs are returned on the page.
     assert (
         bytearray(
-            reverse("deliberate_practice_app:start-practice-session"), response.charset
+            reverse("deliberate_practice_app:start_practice_session"), response.charset
         )
         in response.content
     )
     assert (
-        bytearray(reverse("deliberate_practice_app:practice-results"), response.charset)
+        bytearray(reverse("deliberate_practice_app:practice_results"), response.charset)
         in response.content
     )
