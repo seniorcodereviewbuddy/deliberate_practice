@@ -14,13 +14,9 @@ def main() -> None:
         "DJANGO_SETTINGS_MODULE", "deliberate_practice_project.settings"
     )
     try:
-        # isort: off
-        # isort and black have a weird disagreement here.
         from django.core.management import (  # pylint: disable=import-outside-toplevel
             execute_from_command_line,
         )
-
-        # isort: on
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "
