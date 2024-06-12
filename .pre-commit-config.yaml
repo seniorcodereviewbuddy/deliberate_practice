@@ -39,6 +39,11 @@ repos:
       language: system
       types: [python]
       args: ["--rcfile=.pylintrc", "-sn"]
+- repo: https://github.com/djlint/djLint
+  rev: v1.34.1
+  hooks:
+    - id: djlint-reformat-django
+    - id: djlint-django
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.4.8
   hooks:
