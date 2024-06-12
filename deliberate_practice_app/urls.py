@@ -25,8 +25,8 @@ urlpatterns = [
     ),
     path(
         "practice-session/<int:practice_session_id>",
-        practice.practice_session,
-        name="practice_session",
+        practice.show_practice_session,
+        name="show_practice_session",
     ),
     path(
         "practice-session/<int:practice_session_id>/practice-set",

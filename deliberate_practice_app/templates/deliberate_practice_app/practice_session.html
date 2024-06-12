@@ -1,0 +1,56 @@
+<title>Practice Session Page</title>
+<h1>Practice Session Page</h1>
+
+Practice Session: {{practice_session_id}}<br>
+
+This session is currently
+{% if session_state == "State.ACTIVE" %}
+active.
+{% else %}
+finished.
+{% endif %}
+<br><br>
+
+{{num_practice_sets}} practice sets done in this practice set.<br><br>
+
+
+{% if session_state == "State.ACTIVE"%}
+{% if activity_description %}
+Please practice: {{activity_description}}<br>
+
+What score would you give your practice?<br>
+
+<form action="{% url 'deliberate_practice_app:add_practice_set' practice_session_id=practice_session_id%}" method="post">
+    {% csrf_token %}
+    <fieldset>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <legend><h1>Practice Set Score?</h1></legend>
+
+    {% for id, description in scores %}
+        <input type="radio" name="score" id="choice{{ forloop.counter }}" value="{{ id }}">
+        <label for="choice{{ forloop.counter }}">{{ description }}</label><br>
+    {% endfor %}
+    </fieldset>
+    <input type="hidden" name="activity_id" value="{{activity_id}}">
+    <input type="submit" value="Score Practice Set" />
+</form>
+
+
+{% else %}
+No Activities to Practice.
+{% endif %}
+<br>
+<br>
+<form action="{% url 'deliberate_practice_app:end_practice_session' practice_session_id=practice_session_id%}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="End Practice Session" />
+</form>
+{% else %}
+<br>
+Would you like to start a new Practice Session?
+<form action="{% url 'deliberate_practice_app:start_practice_session'%}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Start Practice Session" />
+</form>
+
+{% endif %}
