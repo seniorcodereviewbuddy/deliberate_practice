@@ -14,7 +14,13 @@ Likely with the following command in a CLI "conda env create --file deliberate_p
 1) If desired, set the environment variable DELIBERATE_PRACTICE_CONDA_DIR to the newly created conda directory<br>
 This can be used by Sublime to find the python executable to run, if desired
 
-## Creating a Super User
+## Running Django Locally
+To start the Django instance locally, run `python manage.py runserver`. By default
+this will run the Deliberate Practice App at http://127.0.0.1:8000/practice. If you
+have a super user, you can go to http://localhost:8000/admin/deliberate_practice_app/activity/
+and create Activities to practice there.
+
+### Creating a Super User
 
 If you need/want to visit the admin page, you'll need to create a superuser. To do so, run `python manage.py createsuperuser`
 with whatever values you desire. Current recommendation for local dev is to have user name and password as admin (ignore the
