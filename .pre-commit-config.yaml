@@ -23,7 +23,7 @@ repos:
       name: isort (python)
       args: ["--profile", "black"]
 -   repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+    rev: 7.1.0
     hooks:
     -   id: flake8
         additional_dependencies:
@@ -45,7 +45,7 @@ repos:
     - id: djlint-reformat-django
     - id: djlint-django
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.4.8
+  rev: v0.4.9
   hooks:
     # Only use ruff for pydocstyle comments for now.
     # Consider using it to replace the other tooling later.
