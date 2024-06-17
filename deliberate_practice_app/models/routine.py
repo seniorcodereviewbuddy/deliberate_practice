@@ -12,6 +12,12 @@ class Activity(models.Model):
     level of skill.
     """
 
+    class Meta:
+        """Model metadata class for anything that isn't a field."""
+
+        verbose_name = "Activity"
+        verbose_name_plural = "Activites"
+
     description = models.CharField(max_length=200)
 
     def __str__(self) -> str:
