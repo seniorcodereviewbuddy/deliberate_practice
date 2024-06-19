@@ -16,7 +16,7 @@ class Activity(models.Model):
         """Model metadata class for anything that isn't a field."""
 
         verbose_name = "Activity"
-        verbose_name_plural = "Activites"
+        verbose_name_plural = "Activities"
 
     description = models.CharField(max_length=200)
 
