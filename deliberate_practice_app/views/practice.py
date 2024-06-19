@@ -80,7 +80,7 @@ def pick_activity(request: HttpRequest) -> typing.Optional[routine.Activity]:
     If the request has specified an activity, use that one.
     Otherwise, randomly pick and activity.
 
-    If there are no Activites in the database, return None.
+    If there are no Activities in the database, return None.
 
     Raises:
         ActivityIdTypeError: activity_id parameter was the wrong type.
