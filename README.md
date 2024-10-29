@@ -48,3 +48,13 @@ You can run an image with:
 docker run -p 127.0.0.1:8181:8181 <image_name>
 
 Note, by default the docker image uses port 8181.
+
+### Using Docker Compose
+
+You can run the docker image through compose with the following helpful commands.
+
+Start the image with:
+docker compose up
+
+If you want to force a rebuild, include --build.
+If you want docker to rebuild if it sees a change, include --watch.

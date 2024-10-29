@@ -159,3 +159,6 @@ cython_debug/
 user_files/
 
 *.bak
+
+# The user environment file should never be committed.
+user.env
