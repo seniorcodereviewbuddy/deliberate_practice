@@ -1,6 +1,7 @@
 services:
   web:
     build: .
+    restart: unless-stopped
     ports:
       - "8181:8181"
     develop:
@@ -13,12 +14,3 @@ services:
         required: true
       - path: "./user.env"
         required: false
-
-# Up with
-# docker compose up
-# Down with
-# docker compose down
-# trigger watch with
-# docker compose up --watch
-# trigger rebuild with
-# docker compose up --build
