@@ -44,7 +44,12 @@ For more details on how to work with pytest, look at https://docs.pytest.org/en/
 You can build an image with:
 docker build -t <image_name> .
 
-You can run an image with:
+If you only want the instance to be visible on the local machine, you can run an image with:
 docker run -p 127.0.0.1:8181:8181 <image_name>
+
+If you only want the instance to be visible to other machines, you can run an image with:
+docker run -p 8181:8181 <image_name>
+
+If you want to change the ALLOWED_HOST value, put the comma seperated values into the DELIBERATE_PRACTICE_SERVER_NAMES environment variable.
 
 Note, by default the docker image uses port 8181.
