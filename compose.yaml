@@ -3,7 +3,9 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      - "8181:8181"
+      # Default to port 8181 but allow it to be overridden by setting
+      # DELIBERATE_PRACTICE_PORT as an environment variable.
+      - "${DELIBERATE_PRACTICE_PORT:-8181}:8181"
     develop:
       watch:
         - action: sync
