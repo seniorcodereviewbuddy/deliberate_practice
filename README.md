@@ -53,3 +53,13 @@ docker run -p 8181:8181 <image_name>
 If you want to change the ALLOWED_HOST value, put the comma seperated values into the DELIBERATE_PRACTICE_SERVER_NAMES environment variable.
 
 Note, by default the docker image uses port 8181.
+
+### Using Docker Compose
+
+You can run the docker image through compose with the following helpful commands.
+
+Start the image with:
+docker compose up
+
+If you want to force a rebuild, include --build.
+If you want docker to rebuild if it sees a change, include --watch.
