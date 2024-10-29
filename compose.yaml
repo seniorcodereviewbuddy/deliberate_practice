@@ -16,3 +16,6 @@ services:
         required: true
       - path: "./user.env"
         required: false
+    volumes:
+      # Mount the sqlite3 database so it will persist between compose ups and downs.
+      - .\database\:/database/
