@@ -64,6 +64,3 @@ docker compose up
 If you want to force a rebuild, include --build.
 If you want docker to rebuild if it sees a change, include --watch.
 If you want to bring up the services in detached mode, include -d.
-
-This mean if you want a long lived version that will auto-update, you probably want
-docker compose up --watch -d
